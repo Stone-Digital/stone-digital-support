@@ -55,7 +55,7 @@ class Dashboard_Panel {
 	    add_menu_page(
             esc_html__( 'Stone Digital', 'stone-digital-support' ),
             esc_html__( 'Stone Digital', 'stone-digital-support' ),
-			'administrator', 
+			'manage_options', 
 			'stone-digital-support-plugin', 
 			array( $this, 'dashboard_welcome_markup' ), 
 			'dashicons-chart-area', 
@@ -138,35 +138,16 @@ class Dashboard_Panel {
 	    settings_errors('lhr_wc_rentals_messages');
 	    ?>
 	    <div class="std-wrap__settings-page">
-	    	<div class="std-container">
-			
-			<h2 class="std-title">Stone Digital - Support Plugin</h2>
-			<ul class="std-dashboard-tabs">
-				<li class="std-tab-btn"><a href="#std-notice-settings" class="std-nav-taba active" id="settings-tab">Settings</a></li>
-				<li class="std-tab-btn"><a href="#std-slack-settings" class="std-nav-tab" id="settings-tab">Slack Settings</a></li>
-				<div class="active-switcher"></div>
-			</ul>
-			<div id="std-notice-settings" class="std-dashboard-tab group active">
-				<form action="options.php" method="post">
-					<?php 
-					settings_fields( 'stonedigital_plugin_options' );
-					do_settings_sections( 'stone-digital-support-plugin' );
-					submit_button();
-					?>
-				</form>
-			</div>
-			<div id="std-slack-settings" class="std-dashboard-tab group">
-				<form action="options.php" method="post">
-					<?php 
-					settings_fields( 'stonedigital_plugin_options_slack' );
-					do_settings_sections( 'stone-digital-support-plugin-slack-tab' );
-					submit_button();
-					?>
-				</form>
-			</div>
-				
-			</div>
-		</div>
+		
+	    <h2>Stone Digital - Support Plugin</h2>
+			<form action="options.php" method="post">
+				<?php 
+				settings_fields( 'stonedigital_plugin_options' );
+				do_settings_sections( 'stone-digital-support-plugin' );
+				submit_button();
+				?>
+			</form>
+	    </div>
 	    <?php
 	}
 
@@ -182,20 +163,11 @@ class Dashboard_Panel {
 	    register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_dev_mode', 'sanitize_checkbox' );
 	    register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_slack_alert_all_user', 'sanitize_checkbox' );
 	    register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_slack_alert_for_admin', 'sanitize_checkbox' );
-	    register_setting( 'stonedigital_plugin_options_slack', 'stonedigital_plugin_slack_webhook_url' );
-	    register_setting( 'stonedigital_plugin_options_slack', 'stonedigital_plugin_slack_channel_name' );
 	    add_settings_section(
 	        'stonedigital_plugin_notices_section',
-	        'Settings', 
+	        'Notices', 
 	        '',
 	        'stone-digital-support-plugin'
-	    );   
-		
-		add_settings_section(
-	        'stonedigital_plugin_slack_section',
-	        'Slack Settings', 
-	        '',
-	        'stone-digital-support-plugin-slack-tab'
 	    );
 
 	    // Register a new field in the "wporg_section_developers" section, inside the "wporg" page.
@@ -245,32 +217,6 @@ class Dashboard_Panel {
 	        array(
 	        	'id' => 'slack_alert_for_admin',
 	        	'label_for' => 'slack_alert_for_admin'
-	        )
-	    );	
-		
-		add_settings_field(
-	        'stonedigital_plugin_slack_webhook_url',
-	        'Enter Slack WebHook',
-	        array($this, 'custom_text_field_callback'),
-	        'stone-digital-support-plugin-slack-tab',
-	        'stonedigital_plugin_slack_section',
-	        array(
-	        	'id' => 'slack_webhook_url',
-	        	'label_for' => 'slack_webhook_url',
-				'field_type' => 'text'
-	        )
-	    );
-
-		add_settings_field(
-	        'stonedigital_plugin_slack_channel_name',
-	        'Enter Slack Channel Name',
-	        array($this, 'custom_text_field_callback'),
-	        'stone-digital-support-plugin-slack-tab',
-	        'stonedigital_plugin_slack_section',
-	        array(
-	        	'id' => 'slack_channel_name',
-	        	'label_for' => 'slack_channel_name',
-				'field_type' => 'text'
 	        )
 	    );
 
@@ -328,22 +274,6 @@ class Dashboard_Panel {
         echo $html;
 	}
 
-	// Define a callback function for the custom text field
-	public function custom_text_field_callback($args) {
-
-		$field_id = $args['label_for'];
-		$field_type = $args['field_type'];
-		if ( 'text' === $field_type) {
-			$options = get_option("stonedigital_plugin_{$field_id}");
-			$id = "stonedigital_plugin_{$field_id}";
-			$field_value = $id;
-			echo "<input type='text' name='$id' value='$options' />";
-		} else {
-			return;
-		}
-		
-	}
-
 	/**
 	 * Redirect dashboard welcome page
      * @since 1.0.0
@@ -351,7 +281,7 @@ class Dashboard_Panel {
 	 * @return string
 	 */
     public function redirect_dashboard_index() {
-        if (is_admin() && basename($_SERVER['PHP_SELF']) == 'index.php') {
+        if (is_admin() && basename($_SERVER['PHP_SELF']) == 'index.php' && empty($_GET)) {
             wp_safe_redirect( admin_url( 'admin.php?page=stone-digital-support-plugin' ) );;
             exit;
         }

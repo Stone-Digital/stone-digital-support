@@ -20,16 +20,9 @@ class Slack_Error_Notification {
     use Singleton;
 
     /**
-	 * $slack_webhook url
-	 * @var null
-	 */
-	public $slack_webhhok_url = null;	    
-    
-    /**
-	 * $slack channel
-	 * @var null
-	 */
-	public $slack_channel_name = null;	
+     * Variable
+     * @var boolean
+     */
 
 	/**
 	 * Constructor.
@@ -44,10 +37,6 @@ class Slack_Error_Notification {
         if ( ! $this->is_local_server() ) {
             register_shutdown_function([$this, 'send_fatal_error_to_slack']);
         }
-
-        $this->slack_webhhok_url =  get_option("stonedigital_plugin_slack_webhook_url");
-        $this->slack_channel_name =  get_option("stonedigital_plugin_slack_channel_name");
-
  
 	}
 
@@ -71,8 +60,8 @@ class Slack_Error_Notification {
                     
                 }
 
-                $slack_webhook_url = '';
-                $slack_channel = $this->slack_channel_name;
+                $slack_webhook_url = 'https://hooks.slack.com/services/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';
+                $slack_channel = '#test-channel';
 
                 $data = array(
                     'channel' => $slack_channel,
@@ -88,7 +77,7 @@ class Slack_Error_Notification {
                 );
 
                 $context  = stream_context_create($options);
-                $result = file_get_contents( $this->slack_webhhok_url , false, $context);
+                $result = file_get_contents($slack_webhook_url, false, $context);
             
             }
     

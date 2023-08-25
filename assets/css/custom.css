@@ -210,21 +210,6 @@ a.sd-link {
 	vertical-align: middle;
 }
 
-.std-wrap__settings-page #std-slack-settings table tbody tr {
-    float: none;
-    background: transparent;
-    padding: 24px 24px;
-
-}
-
-.std-wrap__settings-page #std-slack-settings table tbody tr {
-    border: none;
-}
-
-.std-wrap__settings-page #std-slack-settings table tbody tr td input[type="text"] {
-    width: 50%;
-}
-
 .std-wrap__settings-page .stdoptions_settings_checkbox input {
 	opacity: 0;
     width: 0;
@@ -285,94 +270,4 @@ a.sd-link {
 .std-wrap__settings-page .stdoptions_settings_checkbox input:checked + label::after {
 	background-color: #00893b;
     margin-left: 14px;
-}
-
-.std-dashboard-tabs {
-    position: relative;
-    z-index: 1;
-    margin: 0;
-    background: #e1e1e1;
-    padding: 15px 30px;
-    border-radius: 4px;
-    list-style: none;
-    margin: 30px 0;
-
-}
-
-.std-dashboard-tabs li {
-    display: inline-block;
-    margin: 0 20px 0 0;
-}
-
-.std-dashboard-tabs li a{
-    padding: 15px 25px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 400;
-    text-decoration: none;
-    text-transform: capitalize;
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-}
-
-.std-dashboard-tabs li a{
-    color: #333;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-}
-.std-dashboard-tabs li a:focus{
-    outline: none;
-    box-shadow: unset;
-}
-.std-dashboard-tabs li a.active{
-    color: #FFF;
-}
-
-.std-dashboard-tabs .active-switcher {
-    background: #000;
-    height: 50px;
-    width: 117px;
-    position: absolute;
-    left: 30px;
-    top: 15px;
-    z-index: -1;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    transition: .3s ease;
-}
-
-.std-dashboard-tab {
-    display: none;
-
-}
-.std-dashboard-tab.active {
-    display: block;
-}
-
-.std-wrap__settings-page .std-title {
-    color: #333;
-    font-size: 32px;
-    font-weight: 600;
-    padding-bottom: 40px;
-    border-bottom: 1px solid #000;
-}
-
-.std-dashboard-tab form > h2{
-    color: #333;
-    font-size: 24px;
-    font-weight: 600;
-
-}
-
-.std-container {
-    width: 100%;
-    margin: 0 auto;
-    max-width: 90%;
-}
-
-@media ( min-width: 768px) {
-    .std-container {
-        max-width: 90%;
-    } 
 }
