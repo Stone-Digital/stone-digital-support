@@ -3,7 +3,7 @@
  * Plugin Name: Support @ Stone Digital
  * Plugin URI: https://stonedigital.com.au
  * Description: Custom WordPress plugin provoding number of support features for Stone Digital customers.
- * Version: 1.1.2
+ * Version: 1.1.1
  * Author: Stone Digital
  * Author URI: https://stonedigital.com.au
  * Text Domain: stone-digital-support
@@ -28,7 +28,7 @@ define( 'STD_TEMPLATE_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) . 
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-// plugin update checker
+// // plugin update checker
 require_once STD_ROOT_DIR_PATH . '/vendor/plugin-update-checker/plugin-update-checker.php';
 
 $std_plugin_updater = PucFactory::buildUpdateChecker(
@@ -37,11 +37,10 @@ $std_plugin_updater = PucFactory::buildUpdateChecker(
 	'stone-digital-support'
 );
 
-// $std_plugin_updater->getVcsApi()->enableReleaseAssets();
-
 // $std_plugin_updater->setAuthentication();
 $std_plugin_updater->getVcsApi()->enableReleaseAssets();
 $std_plugin_updater->setBranch('master');
+
 
 // plugin Autoload
 require_once STD_ROOT_DIR_PATH . '/includes/helpers/autoloader.php';

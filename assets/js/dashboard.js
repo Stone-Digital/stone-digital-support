@@ -58,4 +58,17 @@ jQuery( function() {
 		footerNoticeWrap.hide();
 	}
 
+	// Stone Digital support - Dashboard Tabs
+	jQuery( '.std-dashboard-tabs li.std-tab-btn a' ).on( 'click', function(e) {
+		console.log("Hello There");
+		e.preventDefault();
+		jQuery( '.std-dashboard-tabs li.std-tab-btn a' ).removeClass( 'active' );
+		jQuery(this).addClass( 'active' );
+		var tab = jQuery(this).attr( 'href' );
+		jQuery( '.std-dashboard-tab' ).removeClass( 'active' );
+		jQuery( '.std-wrap__settings-page' ).find( tab ).addClass( 'active' );
+		jQuery(".std-dashboard-tabs .active-switcher").css('width', jQuery(this).width()+50);
+		jQuery(".std-dashboard-tabs .active-switcher").css('left', jQuery(this).position().left);
+	});
+
 });

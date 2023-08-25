@@ -25,6 +25,18 @@ class Slack_Notification {
      */
     protected $check_ip_status = false;
 
+    /**
+	 * $slack_webhook url
+	 * @var null
+	 */
+	public $slack_webhhok_url = null;	    
+    
+    /**
+	 * $slack channel
+	 * @var null
+	 */
+	public $slack_channel_name = null;	
+
 	/**
 	 * Constructor.
 	 *
@@ -38,6 +50,10 @@ class Slack_Notification {
         add_action('wp_login',  [ $this, 'insert_wpdb_user_login_details' ], 10, 2);
 
         add_action( 'wp_login', [ $this, 'get_login_alert' ], 10, 2 );
+
+        $this->slack_webhhok_url =  get_option("stonedigital_plugin_slack_webhook_url");
+        $this->slack_channel_name =  get_option("stonedigital_plugin_slack_channel_name");
+
 	}
 
 
@@ -180,11 +196,11 @@ class Slack_Notification {
         $user_email = $user->user_email;
         $user_roles  = $user->roles[0];
         $login_time = current_time('mysql');
-      
+        $slack_url = '';
 
-        $client = new \Maknz\Slack\Client('https://hooks.slack.com/services/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');
+        $client = new \Maknz\Slack\Client($this->slack_webhhok_url);
             
-        $client->to('#test-channel')->attach([
+        $client->to($this->slack_channel_name)->attach([
             'fallback' => 'This is a Fallback Messages',
             'country' => $country,
             'color' => 'danger',
