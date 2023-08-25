@@ -32,15 +32,16 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 require_once STD_ROOT_DIR_PATH . '/vendor/plugin-update-checker/plugin-update-checker.php';
 
 $std_plugin_updater = PucFactory::buildUpdateChecker(
-	'https://github.com/Stone-Digital/stone-digital-support',
+	'https://github.com/Stone-Digital/stone-digital-support/',
 	__FILE__,
 	'stone-digital-support'
 );
 
+// $std_plugin_updater->getVcsApi()->enableReleaseAssets();
+
+// $std_plugin_updater->setAuthentication();
 $std_plugin_updater->getVcsApi()->enableReleaseAssets();
-
-// $std_plugin_updater->setAuthentication( '' );
-
+$std_plugin_updater->setBranch('master');
 
 // plugin Autoload
 require_once STD_ROOT_DIR_PATH . '/includes/helpers/autoloader.php';
