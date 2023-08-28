@@ -5,7 +5,6 @@ use Std_Support\Includes\Traits\Singleton;
 
 defined( 'ABSPATH' ) || exit; // disable direct access
 
-
 class Hide_Login_Url {
 
     use Singleton;
@@ -80,8 +79,6 @@ class Hide_Login_Url {
 
 		remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-
         add_filter( 'wp_redirect', array( $this, 'wp_redirect' ), 10, 2 );
 
 		add_action( 'template_redirect', array( $this, 'redirect_export_data' ) );
@@ -112,10 +109,6 @@ class Hide_Login_Url {
 
 			}
 		}
-	}
-
-	public function test_echo() {
-		return "stundent return working";
 	}
 
     public function site_status_tests( $tests ) {
@@ -412,22 +405,6 @@ class Hide_Login_Url {
 
 		}
 
-	}
-
-	
-	/**
-	 * Load scripts
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'options-general.php' != $hook ) {
-			return false;
-		}
-
-		wp_enqueue_style( 'plugin-install' );
-
-		wp_enqueue_script( 'plugin-install' );
-		wp_enqueue_script( 'updates' );
-		add_thickbox();
 	}
 
 	public function site_url( $url, $path, $scheme, $blog_id ) {

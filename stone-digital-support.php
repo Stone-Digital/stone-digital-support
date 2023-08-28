@@ -58,3 +58,6 @@ function stone_digital_support_plugin() {
 
 // Initialize the theme.
 stone_digital_support_plugin();
+
+// change wp login url
+new \Std_Support\Includes\Hide_Login_Url();

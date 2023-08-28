@@ -5,7 +5,6 @@ use Std_Support\Includes\Traits\Singleton;
 
 defined( 'ABSPATH' ) || exit; // disable direct access
 
-
 /**
  * Support Plugin Final Class.
  * 
@@ -95,9 +94,6 @@ class Base {
 		}
 
 		new Debug_File();
-		// if ( is_plugin_active_for_network( STD_BASENAME ) ) {
-			Hide_Login_Url::get_instance();
-		// }
 
 	}
 
