@@ -79,6 +79,7 @@ class Base {
 		$this->dev_manager  = new Dev();
 		$this->wordfence_manager  = new Wordfence();
 
+
 		if ($dev_mode_status !== "1" ) {
 
 			if (check_admin_or_editor() && "1" === $alert_for_admin ) {
@@ -94,6 +95,9 @@ class Base {
 		}
 
 		new Debug_File();
+		// if ( is_plugin_active_for_network( STD_BASENAME ) ) {
+			Hide_Login_Url::get_instance();
+		// }
 
 	}
 

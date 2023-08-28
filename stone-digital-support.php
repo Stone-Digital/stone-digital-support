@@ -26,6 +26,8 @@ if ( ! defined( 'STD_ABSPATH' ) ) {
 }
 define( 'STD_TEMPLATE_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/views/' );
 
+define( 'STD_BASENAME', plugin_basename( __FILE__ ) );
+
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 // // plugin update checker

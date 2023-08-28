@@ -144,6 +144,7 @@ class Dashboard_Panel {
 			<ul class="std-dashboard-tabs">
 				<li class="std-tab-btn"><a href="#std-notice-settings" class="std-nav-taba active" id="settings-tab">Settings</a></li>
 				<li class="std-tab-btn"><a href="#std-slack-settings" class="std-nav-tab" id="settings-tab">Slack Settings</a></li>
+				<li class="std-tab-btn"><a href="#std-login-url-settings" class="std-nav-tab" id="settings-tab">Change Login Url</a></li>
 				<div class="active-switcher"></div>
 			</ul>
 			<div id="std-notice-settings" class="std-dashboard-tab group active">
@@ -160,6 +161,16 @@ class Dashboard_Panel {
 					<?php 
 					settings_fields( 'stonedigital_plugin_options_slack' );
 					do_settings_sections( 'stone-digital-support-plugin-slack-tab' );
+					submit_button();
+					?>
+				</form>
+			</div>
+			
+			<div id="std-login-url-settings" class="std-dashboard-tab group">
+				<form action="options.php" method="post">
+					<?php 
+					settings_fields( 'stonedigital_plugin_options_login_url' );
+					do_settings_sections( 'stone-digital-support-plugin-login-url' );
 					submit_button();
 					?>
 				</form>
@@ -184,6 +195,8 @@ class Dashboard_Panel {
 	    register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_slack_alert_for_admin', 'sanitize_checkbox' );
 	    register_setting( 'stonedigital_plugin_options_slack', 'stonedigital_plugin_slack_webhook_url' );
 	    register_setting( 'stonedigital_plugin_options_slack', 'stonedigital_plugin_slack_channel_name' );
+	    register_setting( 'stonedigital_plugin_options_login_url', 'stonedigital_plugin_hide_login_url_name' );
+	    register_setting( 'stonedigital_plugin_options_login_url', 'stonedigital_plugin_hide_redirection_url_name' );
 	    add_settings_section(
 	        'stonedigital_plugin_notices_section',
 	        'Settings', 
@@ -196,6 +209,13 @@ class Dashboard_Panel {
 	        'Slack Settings', 
 	        '',
 	        'stone-digital-support-plugin-slack-tab'
+	    );
+
+		add_settings_section(
+	        'stonedigital_plugin_hide_login_url_section',
+	        'Hide Login Url', 
+	        '',
+	        'stone-digital-support-plugin-login-url'
 	    );
 
 	    // Register a new field in the "wporg_section_developers" section, inside the "wporg" page.
@@ -273,6 +293,34 @@ class Dashboard_Panel {
 				'field_type' => 'text'
 	        )
 	    );
+		// Hide Login Settings 
+		add_settings_field(
+	        'stonedigital_plugin_hide_login_url_name',
+	        'Enter Login url',
+	        array($this, 'custom_text_field_callback'),
+	        'stone-digital-support-plugin-login-url',
+	        'stonedigital_plugin_hide_login_url_section',
+	        array(
+	        	'id' => 'hide_login_url_name',
+	        	'label_for' => 'hide_login_url_name',
+				'field_type' => 'text'
+	        )
+	    );
+
+		add_settings_field(
+	        'stonedigital_plugin_hide_redirection_url_name',
+	        'Enter Redirection url',
+	        array($this, 'custom_text_field_callback'),
+	        'stone-digital-support-plugin-login-url',
+	        'stonedigital_plugin_hide_login_url_section',
+	        array(
+	        	'id' => 'hide_redirection_url_name',
+	        	'label_for' => 'hide_redirection_url_name',
+				'field_type' => 'text'
+	        )
+	    );
+
+		// stonedigital_plugin_hide_login_url_section
 
 	    // add_settings_field(
 	    //     'stonedigital_plugin_show_notices',
