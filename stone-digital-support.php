@@ -3,7 +3,7 @@
  * Plugin Name: Support @ Stone Digital
  * Plugin URI: https://stonedigital.com.au
  * Description: Custom WordPress plugin provoding number of support features for Stone Digital customers.
- * Version: 1.1.2
+ * Version: 1.1.3
  * Author: Stone Digital
  * Author URI: https://stonedigital.com.au
  * Text Domain: stone-digital-support
@@ -58,12 +58,3 @@ function stone_digital_support_plugin() {
 
 // Initialize the theme.
 stone_digital_support_plugin();
-
-// change wp login url
-$enable_hide_login_url = get_option("stonedigital_plugin_enable_std_hide_login_url");
-
-// print_r($enable_hide_login_url);
-
-if ($enable_hide_login_url === "1" ) {
-	new \Std_Support\Includes\Hide_Login_Url();
-}

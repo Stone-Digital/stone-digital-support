@@ -47,12 +47,13 @@ class Slack_Notification {
 	 */
 	public function __construct() {
 
-        add_action('wp_login',  [ $this, 'insert_wpdb_user_login_details' ], 10, 2);
-
-        add_action( 'wp_login', [ $this, 'get_login_alert' ], 10, 2 );
-
         $this->slack_webhhok_url =  get_option("stonedigital_plugin_slack_webhook_url");
         $this->slack_channel_name =  get_option("stonedigital_plugin_slack_channel_name");
+
+        if ( !empty($this->slack_webhhok_url) && !empty($this->slack_channel_name)) {
+            add_action( 'wp_login',  [ $this, 'insert_wpdb_user_login_details' ], 10, 2 );
+            add_action( 'wp_login', [ $this, 'get_login_alert' ], 10, 2 );
+        }
 
 	}
 

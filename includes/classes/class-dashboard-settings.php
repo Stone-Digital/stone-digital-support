@@ -42,6 +42,7 @@ class Dashboard_settings {
 		add_filter( 'login_headertext', array($this, 'custom_login_headertext'), 20);
 		add_action('admin_init', array( $this, 'remove_user_roles'), 10);
 		add_action('admin_init', array( $this, 'add_custom_user_role'), 20);
+		add_action('admin_init',array( $this, 'std_gravity_forms_client_account_access' ), 30);
 		// Close comments on the front-end
 		add_filter('comments_open', '__return_false', 20, 2);
 		add_filter('pings_open', '__return_false', 20, 2);
@@ -167,6 +168,16 @@ class Dashboard_settings {
         add_role('client-account', "Client Account", $capabilities_arg);
 
 	}
+
+	public function std_gravity_forms_client_account_access() {
+		$role = get_role('client-account');
+		$role->add_cap( 'gravityforms_view_entries' );
+		// $role->add_cap( 'gravityforms_edit_entries' );
+		// $role->add_cap( 'gravityforms_delete_entries' );
+		// $role->add_cap( 'gravityforms_edit_forms');
+		// $role->add_cap( 'gravityforms_export_entries' );
+	}
+
 
 	public function remove_user_roles() {
 		//check if role exist before removing it

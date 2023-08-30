@@ -41,13 +41,12 @@ class Slack_Error_Notification {
 	 */
 	public function __construct() {
 
-        if ( ! $this->is_local_server() ) {
-            register_shutdown_function([$this, 'send_fatal_error_to_slack']);
-        }
-
         $this->slack_webhhok_url =  get_option("stonedigital_plugin_slack_webhook_url");
         $this->slack_channel_name =  get_option("stonedigital_plugin_slack_channel_name");
 
+        if ( ! $this->is_local_server() && !empty($this->slack_webhhok_url) && !empty($this->slack_channel_name) ) {
+            register_shutdown_function([$this, 'send_fatal_error_to_slack']);
+        }
  
 	}
 
@@ -71,7 +70,7 @@ class Slack_Error_Notification {
                     
                 }
 
-                $slack_webhook_url = '';
+                $slack_webhook_url = $this->slack_webhhok_url;
                 $slack_channel = $this->slack_channel_name;
 
                 $data = array(
@@ -88,7 +87,7 @@ class Slack_Error_Notification {
                 );
 
                 $context  = stream_context_create($options);
-                $result = file_get_contents( $this->slack_webhhok_url , false, $context);
+                $result = file_get_contents( $slack_webhook_url , false, $context);
             
             }
     
