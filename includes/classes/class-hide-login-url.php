@@ -22,7 +22,7 @@ class Hide_Login_Url {
 	public function __construct() {
 
 		global $wp_version;
-     
+
         if ( version_compare( $wp_version, '5.0', '<' ) ) {
 			add_action( 'admin_notices', array( $this, 'admin_notices_incompatible' ) );
 			add_action( 'network_admin_notices', array( $this, 'admin_notices_incompatible' ) );
@@ -78,6 +78,8 @@ class Hide_Login_Url {
         add_filter( 'network_site_url', array( $this, 'network_site_url' ), 10, 3 );
 
 		remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
         add_filter( 'wp_redirect', array( $this, 'wp_redirect' ), 10, 2 );
 
@@ -200,7 +202,7 @@ class Hide_Login_Url {
 		} else {
 			if ( $slug = get_option( 'stonedigital_plugin_hide_login_url_name' ) ) {
 				return $slug;
-			} else if ( ( is_multisite() && is_plugin_active_for_network( STD_BASENAME ) && ( $slug = get_site_option( 'stonedigital_plugin_hide_login_url_name', 'login' ) ) ) ) {
+			} else if ( ( is_multisite() && is_plugin_active_for_network( STD_BASENAME ) && ( $slug = get_option( 'stonedigital_plugin_hide_login_url_name', 'login' ) ) ) ) {
 				return $slug;
 			} else if ( $slug = 'login' ) {
 				return $slug;
@@ -467,6 +469,23 @@ class Hide_Login_Url {
 
 	}
     
+	
+	/**
+	 * Load scripts
+	 */
+	public function admin_enqueue_scripts( $hook ) {
+		if ( 'options-general.php' != $hook ) {
+			return false;
+		}
+
+		wp_enqueue_style( 'plugin-install' );
+
+		wp_enqueue_script( 'plugin-install' );
+		wp_enqueue_script( 'updates' );
+		add_thickbox();
+	}
+
+	
     public function forbidden_slugs() {
 
 		$wp = new \WP;

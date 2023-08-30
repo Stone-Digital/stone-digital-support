@@ -60,4 +60,10 @@ function stone_digital_support_plugin() {
 stone_digital_support_plugin();
 
 // change wp login url
-new \Std_Support\Includes\Hide_Login_Url();
+$enable_hide_login_url = get_option("stonedigital_plugin_enable_std_hide_login_url");
+
+// print_r($enable_hide_login_url);
+
+if ($enable_hide_login_url === "1" ) {
+	new \Std_Support\Includes\Hide_Login_Url();
+}

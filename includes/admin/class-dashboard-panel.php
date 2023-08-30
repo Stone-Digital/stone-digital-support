@@ -195,6 +195,7 @@ class Dashboard_Panel {
 	    register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_slack_alert_for_admin', 'sanitize_checkbox' );
 	    register_setting( 'stonedigital_plugin_options_slack', 'stonedigital_plugin_slack_webhook_url' );
 	    register_setting( 'stonedigital_plugin_options_slack', 'stonedigital_plugin_slack_channel_name' );
+	    register_setting( 'stonedigital_plugin_options_login_url', 'stonedigital_plugin_enable_std_hide_login_url' );
 	    register_setting( 'stonedigital_plugin_options_login_url', 'stonedigital_plugin_hide_login_url_name' );
 	    register_setting( 'stonedigital_plugin_options_login_url', 'stonedigital_plugin_hide_redirection_url_name' );
 	    add_settings_section(
@@ -294,6 +295,19 @@ class Dashboard_Panel {
 	        )
 	    );
 		// Hide Login Settings 
+
+		add_settings_field(
+	        'stonedigital_plugin_enable_std_hide_login_url',
+	        'Enable Hide Wp Login Url',
+	        array($this, 'settings_field_callback'),
+	        'stone-digital-support-plugin-login-url',
+	        'stonedigital_plugin_hide_login_url_section',
+	        array(
+	        	'id' => 'enable_std_hide_login_url',
+	        	'label_for' => 'enable_std_hide_login_url'
+	        )
+	    );	
+
 		add_settings_field(
 	        'stonedigital_plugin_hide_login_url_name',
 	        'Enter Login url',

@@ -58,17 +58,54 @@ jQuery( function() {
 		footerNoticeWrap.hide();
 	}
 
-	// Stone Digital support - Dashboard Tabs
-	jQuery( '.std-dashboard-tabs li.std-tab-btn a' ).on( 'click', function(e) {
-		console.log("Hello There");
-		e.preventDefault();
-		jQuery( '.std-dashboard-tabs li.std-tab-btn a' ).removeClass( 'active' );
-		jQuery(this).addClass( 'active' );
-		var tab = jQuery(this).attr( 'href' );
-		jQuery( '.std-dashboard-tab' ).removeClass( 'active' );
-		jQuery( '.std-wrap__settings-page' ).find( tab ).addClass( 'active' );
-		jQuery(".std-dashboard-tabs .active-switcher").css('width', jQuery(this).width()+50);
-		jQuery(".std-dashboard-tabs .active-switcher").css('left', jQuery(this).position().left);
+	var $tabLinks = jQuery('.std-dashboard-tabs li.std-tab-btn a');
+	var $activeSwitcher = jQuery('.std-dashboard-tabs .active-switcher');
+  
+	$tabLinks.on('click', function(e) {
+	  e.preventDefault();
+  
+	  var $clickedTab = jQuery(this);
+	  var tab = $clickedTab.attr('href');
+  
+	  // Update active tab in local storage
+	  localStorage.setItem('lastActiveTab', tab);
+  
+	  // Remove active class from all tab links and tabs
+	  $tabLinks.removeClass('active');
+	  jQuery('.std-dashboard-tab').removeClass('active');
+  
+	  // Add active class to clicked tab link and corresponding tab content
+	  $clickedTab.addClass('active');
+	  jQuery(tab).addClass('active');
+  
+	  // Update active switcher position
+	  var switcherLeft = $clickedTab.position().left;
+	  var switcherWidth = $clickedTab.width() + 50;
+	  $activeSwitcher.css({
+		'left': switcherLeft,
+		'width': switcherWidth
+	  });
 	});
+  
+	// Retrieve last active tab from local storage
+	var lastActiveTab = localStorage.getItem('lastActiveTab');
+	if (lastActiveTab) {
+	  $tabLinks.filter('[href="' + lastActiveTab + '"]').click();
+	} else {
+	  $tabLinks.first().click(); // Default to the first tab
+	}
+
+	// Stone Digital support - Dashboard Tabs
+	// jQuery( '.std-dashboard-tabs li.std-tab-btn a' ).on( 'click', function(e) {
+	// 	console.log("Hello There");
+	// 	e.preventDefault();
+	// 	jQuery( '.std-dashboard-tabs li.std-tab-btn a' ).removeClass( 'active' );
+	// 	jQuery(this).addClass( 'active' );
+	// 	var tab = jQuery(this).attr( 'href' );
+	// 	jQuery( '.std-dashboard-tab' ).removeClass( 'active' );
+	// 	jQuery( '.std-wrap__settings-page' ).find( tab ).addClass( 'active' );
+	// 	jQuery(".std-dashboard-tabs .active-switcher").css('width', jQuery(this).width()+50);
+	// 	jQuery(".std-dashboard-tabs .active-switcher").css('left', jQuery(this).position().left);
+	// });
 
 });
