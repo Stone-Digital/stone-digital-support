@@ -3,7 +3,7 @@
  * Plugin Name: Support @ Stone Digital
  * Plugin URI: https://stonedigital.com.au
  * Description: Custom WordPress plugin provoding number of support features for Stone Digital customers.
- * Version: 1.1.3
+ * Version: 1.1.4
  * Author: Stone Digital
  * Author URI: https://stonedigital.com.au
  * Text Domain: stone-digital-support
@@ -51,6 +51,11 @@ require_once STD_ROOT_DIR_PATH . '/includes/helpers/helper-functions.php';
 // Autoload
 require STD_ROOT_DIR_PATH . '/vendor/slack/autoload.php';
 
+
+register_activation_hook(__FILE__, function() {
+    $baseInstance = new Std_Support\Includes\Base();
+    $baseInstance->create_login_tables();
+});
 
 function stone_digital_support_plugin() {
 	\Std_Support\Includes\Base::get_instance();

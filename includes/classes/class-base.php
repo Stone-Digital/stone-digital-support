@@ -134,4 +134,36 @@ class Base {
 
 	}
 
+	/**
+	 * Create Table when plugin Activate
+	 *
+	 * Create Table action on plugin Activate.
+	 *
+	 * @since    1.1.4
+	 * @access   public
+	 */
+	
+	public function create_login_tables() {
+		global $wpdb;
+
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$schema = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}std_user_logins` (
+			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`ip_address` varchar(100) NOT NULL DEFAULT '',
+			`user_name` varchar(30) DEFAULT NULL,
+			`user_email` varchar(30) DEFAULT NULL,
+			`country` varchar(30) DEFAULT NULL,
+			`login_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (`id`)
+		) $charset_collate";
+
+		if ( ! function_exists( 'dbDelta' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		}
+
+		dbDelta( $schema );
+	}
+
+
 }
