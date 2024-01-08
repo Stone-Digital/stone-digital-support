@@ -57,6 +57,13 @@ register_activation_hook(__FILE__, function() {
     $baseInstance->create_login_tables();
 });
 
+register_activation_hook( __FILE__, ['\Std_Support\Includes\Hide_Login_Url', 'activate' ] );
+
+add_action( 'plugins_loaded', 'plugins_loaded_stone_digital' );
+function plugins_loaded_stone_digital() {
+	\Std_Support\Includes\Hide_Login_Url::get_instance();
+}
+
 function stone_digital_support_plugin() {
 	\Std_Support\Includes\Base::get_instance();
 }
