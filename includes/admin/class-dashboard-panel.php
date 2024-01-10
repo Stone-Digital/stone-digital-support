@@ -193,6 +193,7 @@ class Dashboard_Panel {
 	    register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_dev_mode', 'sanitize_checkbox' );
 	    register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_slack_alert_all_user', 'sanitize_checkbox' );
 	    register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_slack_alert_for_admin', 'sanitize_checkbox' );
+		register_setting( 'stonedigital_plugin_options', 'stonedigital_plugin_enable_comments_form', 'sanitize_checkbox' );
 	    register_setting( 'stonedigital_plugin_options_slack', 'stonedigital_plugin_slack_webhook_url' );
 	    register_setting( 'stonedigital_plugin_options_slack', 'stonedigital_plugin_slack_channel_name' );
 		register_setting( 'stonedigital_plugin_options_login_url', 'stonedigital_plugin_enable_std_hide_login_url' );
@@ -267,6 +268,18 @@ class Dashboard_Panel {
 	        array(
 	        	'id' => 'slack_alert_for_admin',
 	        	'label_for' => 'slack_alert_for_admin'
+	        )
+	    );	
+		
+		add_settings_field(
+	        'stonedigital_plugin_enable_comments_form',
+	        'Enable Comments Form',
+	        array($this, 'settings_field_callback'),
+	        'stone-digital-support-plugin',
+	        'stonedigital_plugin_notices_section',
+	        array(
+	        	'id' => 'enable_comments_form',
+	        	'label_for' => 'enable_comments_form'
 	        )
 	    );	
 		

@@ -42,14 +42,18 @@ class Dashboard_settings {
 		add_filter( 'login_headertext', array($this, 'custom_login_headertext'), 20);
 		add_action('admin_init', array( $this, 'remove_user_roles'), 10);
 		add_action('admin_init', array( $this, 'add_custom_user_role'), 20);
+
 		add_action('admin_init',array( $this, 'std_gravity_forms_client_account_access' ), 30);
-		// Close comments on the front-end
-		add_filter('comments_open', '__return_false', 20, 2);
-		add_filter('pings_open', '__return_false', 20, 2);
-		add_filter('comments_array', '__return_empty_array', 10, 2);
-		add_action('admin_init', array($this, 'remove_comments_links_from_dashboard'));
-		add_action('admin_menu', array($this, 'remove_comments_page_in_menu'));
-		
+		$enable_comments_form = get_option("stonedigital_plugin_enable_comments_form");
+		if ($enable_comments_form !== "1" ) {
+
+			// Close comments on the front-end
+			add_filter('comments_open', '__return_false', 20, 2);
+			add_filter('pings_open', '__return_false', 20, 2);
+			add_filter('comments_array', '__return_empty_array', 10, 2);
+			add_action('admin_init', array($this, 'remove_comments_links_from_dashboard'));
+			add_action('admin_menu', array($this, 'remove_comments_page_in_menu'));
+		}
 		
 		// add_action('in_admin_footer', array($this, 'get_theme_screenshot'), 30);
 		add_action('admin_init', array($this, 'remove_menu_items_for_client_accounts'), 200);
