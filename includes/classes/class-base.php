@@ -78,6 +78,11 @@ class Base {
 		$this->dev_manager  = new Dev();
 		$this->wordfence_manager  = new Wordfence();
 	
+		if ( is_admin() ) {
+            // Plugin Settings URL
+            add_filter( 'plugin_action_links_'.STD_BASENAME, [ $this, 'plugin_settings_action' ] );
+        }
+
 		if ($dev_mode_status !== "1" ) {
 
 			if (check_admin_or_editor() && "1" === $alert_for_admin ) {
@@ -133,6 +138,17 @@ class Base {
 	public static function deactivate() {
 
 	}
+
+	/**
+     * Add Plugin Action link for settings page
+	 * 
+	 * @since    1.1.5
+	 * @access   public
+     */
+    public function plugin_settings_action( $links ) {
+		array_unshift( $links, '<a href="' . admin_url( 'admin.php?page=stone-digital-support-settings' ) . '">' . __( 'Settings', 'stone-digital-support' ) . '</a>' );
+        return $links;
+    }
 
 	/**
 	 * Create Table when plugin Activate
