@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit; // disable direct access
  * Support Plugin Debug Folder & Files Class.
  * 
  * @package Support @ Stone Digital
- * @since 1.1.0
+ * @since 1.1.5
  */
 
 class Hide_Login_Url {
@@ -36,81 +36,80 @@ class Hide_Login_Url {
 	 *
 	 * Creates the instances of this class.
 	 *
-	 * @since    1.0.0
+	 * @since 1.1.5
 	 * @access   public
 	 */
 	
 	public function __construct() {
 
 		global $wp_version;
+		$enable_std_hide_login_url = get_option("stonedigital_plugin_enable_std_hide_login_url");
 
-        if ( version_compare( $wp_version, '5.0', '<' ) ) {
-			add_action( 'admin_notices', array( $this, 'admin_notices_incompatible' ) );
-			add_action( 'network_admin_notices', array( $this, 'admin_notices_incompatible' ) );
+		if ($enable_std_hide_login_url === "1" ) {
+			if ( version_compare( $wp_version, '5.0', '<' ) ) {
+				add_action( 'admin_notices', array( $this, 'admin_notices_incompatible' ) );
+				add_action( 'network_admin_notices', array( $this, 'admin_notices_incompatible' ) );
 
-			return;
-		}
-
-        
-		if ( is_multisite() && ! function_exists( 'is_plugin_active_for_network' ) || ! function_exists( 'is_plugin_active' ) ) {
-			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-
-		}
-
-		if ( is_plugin_active_for_network( 'rename-wp-login/rename-wp-login.php' ) ) {
-			deactivate_plugins( STD_BASENAME );
-			add_action( 'network_admin_notices', array( $this, 'admin_notices_plugin_conflict' ) );
-			if ( isset( $_GET['activate'] ) ) {
-				unset( $_GET['activate'] );
+				return;
 			}
 
-			return;
-		}
+			
+			if ( is_multisite() && ! function_exists( 'is_plugin_active_for_network' ) || ! function_exists( 'is_plugin_active' ) ) {
+				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 
-		if ( is_plugin_active( 'rename-wp-login/rename-wp-login.php' ) ) {
-			deactivate_plugins( STD_BASENAME );
-			add_action( 'admin_notices', array( $this, 'admin_notices_plugin_conflict' ) );
-			if ( isset( $_GET['activate'] ) ) {
-				unset( $_GET['activate'] );
 			}
 
-			return;
+			if ( is_plugin_active_for_network( 'rename-wp-login/rename-wp-login.php' ) ) {
+				deactivate_plugins( STD_BASENAME );
+				add_action( 'network_admin_notices', array( $this, 'admin_notices_plugin_conflict' ) );
+				if ( isset( $_GET['activate'] ) ) {
+					unset( $_GET['activate'] );
+				}
+
+				return;
+			}
+
+			if ( is_plugin_active( 'rename-wp-login/rename-wp-login.php' ) ) {
+				deactivate_plugins( STD_BASENAME );
+				add_action( 'admin_notices', array( $this, 'admin_notices_plugin_conflict' ) );
+				if ( isset( $_GET['activate'] ) ) {
+					unset( $_GET['activate'] );
+				}
+
+				return;
+			}
+
+			if ( is_multisite() && is_plugin_active_for_network( STD_BASENAME ) ) {
+			// 	add_action( 'wpmu_options', array( $this, 'wpmu_options' ) );
+				add_action( 'std_update_wpmu_options', array( $this, 'std_update_wpmu_options' ) );
+
+			}
+
+			if ( is_multisite() ) {
+				add_action( 'wp_before_admin_bar_render', array( $this, 'modify_mysites_menu' ), 999 );
+			}
+			add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 9999 );
+
+			add_action( 'wp_loaded', array( $this, 'wp_loaded' ) );
+
+			add_filter( 'site_url', array( $this, 'site_url' ), 10, 4 );
+
+			add_filter( 'network_site_url', array( $this, 'network_site_url' ), 10, 3 );
+
+			remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
+
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+			add_filter( 'wp_redirect', array( $this, 'wp_redirect' ), 10, 2 );
+
+			add_action( 'template_redirect', array( $this, 'redirect_export_data' ) );
+
+			add_filter( 'login_url', array( $this, 'login_url' ), 10, 3 );
+
+			add_filter( 'user_request_action_email_content', array( $this, 'user_request_action_email_content' ), 999, 2 );
+
+			add_filter( 'site_status_tests', array( $this, 'site_status_tests' ) );
 		}
-
-        if ( is_multisite() && is_plugin_active_for_network( STD_BASENAME ) ) {
-		// 	add_action( 'wpmu_options', array( $this, 'wpmu_options' ) );
-			add_action( 'std_update_wpmu_options', array( $this, 'std_update_wpmu_options' ) );
-
-		// 	add_filter( 'network_admin_plugin_action_links_' . STD_BASENAME, array(
-		// 		$this,
-		// 		'plugin_action_links'
-		// 	) );
-		}
-
-		if ( is_multisite() ) {
-			add_action( 'wp_before_admin_bar_render', array( $this, 'modify_mysites_menu' ), 999 );
-		}
-        add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 9999 );
-
-		add_action( 'wp_loaded', array( $this, 'wp_loaded' ) );
-
-        add_filter( 'site_url', array( $this, 'site_url' ), 10, 4 );
-
-        add_filter( 'network_site_url', array( $this, 'network_site_url' ), 10, 3 );
-
-		remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
-
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-
-        add_filter( 'wp_redirect', array( $this, 'wp_redirect' ), 10, 2 );
-
-		add_action( 'template_redirect', array( $this, 'redirect_export_data' ) );
-
-        add_filter( 'login_url', array( $this, 'login_url' ), 10, 3 );
-
-        add_filter( 'user_request_action_email_content', array( $this, 'user_request_action_email_content' ), 999, 2 );
-
-		add_filter( 'site_status_tests', array( $this, 'site_status_tests' ) );
 	}
 
 	/**
@@ -118,7 +117,7 @@ class Hide_Login_Url {
 	 *
 	 * Triggers the public hooks.
 	 *
-	 * @since    1.0.0
+	 * @since 	1.1.5
 	 * @access   public
 	 */
 	public function setup_hooks() {
@@ -172,6 +171,8 @@ class Hide_Login_Url {
 
     /**
 	 * Plugin activation
+	 * 
+	 *  @since 	1.1.5
 	 */
 	public static function activate() {
 
@@ -541,7 +542,7 @@ class Hide_Login_Url {
 	 * @param $login_url
 	 * @param $redirect
 	 * @param $force_reauth
-	 *
+	 * @since 	1.1.5
 	 * @return string
 	 */
 	public function login_url( $login_url, $redirect, $force_reauth ) {

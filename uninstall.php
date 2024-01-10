@@ -5,7 +5,7 @@
  * Author: Stone Digital
  * Author URI: https://stonedigital.com.au
  * @package Support @ Stone Digital
- * @since 1.1.4
+ * @since 1.1.5
  */
 
 // If uninstall not called from WordPress, then exit
